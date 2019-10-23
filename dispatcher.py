@@ -39,8 +39,7 @@ class Dispatcher(aiogram.Dispatcher):
     async def start(self, message: aiogram.types.Message):
         await self.bot.send_message(message.chat.id,
                                     text='Привет, Олег. Как сам?\n'
-                                         'Вот тебе список команд:\n'
-                                         '/add_search\n' + self.HELP)
+                                         'Вот тебе список команд:\n' + self.HELP)
 
     async def cancel(self, message: aiogram.types.Message, state: aiogram.dispatcher.FSMContext):
         pass
