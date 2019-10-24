@@ -14,7 +14,6 @@ async def get_html(url, **kwargs):
 
 class ChipFind:
     TYPE = {
-        '': 'Куплю/Продам',
         'buy': 'Куплю',
         'sale': 'Продам'
     }
@@ -54,4 +53,6 @@ class ChipFind:
 
     @classmethod
     def format_query_message(cls, query):
-        return f'{query["s"]} ({cls.TYPE.get(query["filter"].lower())})'
+        query_filter = query.get('filter')
+        return f'{query["s"]} ' \
+               f'({"/".join(cls.TYPE.values()) if not query_filter else cls.TYPE.get(query_filter.lower())})'
