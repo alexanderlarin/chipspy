@@ -41,9 +41,6 @@ class Dispatcher(aiogram.Dispatcher):
                                     text='Привет, Олег. Как сам?\n'
                                          'Вот тебе список команд:\n' + self.HELP)
 
-    async def cancel(self, message: aiogram.types.Message, state: aiogram.dispatcher.FSMContext):
-        pass
-
     async def add_search(self, message: aiogram.types.Message):
         await search_url_state.set()
         await self.bot.send_message(message.chat.id,
@@ -71,7 +68,8 @@ class Dispatcher(aiogram.Dispatcher):
         except Exception as ex:
             logger.error(f'trouble in message={message.text} processing')
             logger.exception(ex)
-            await message.reply(text='Олег, ну что за ерунду ты прислал? Попробуй-ка еще разок...\n' + self.HELP)
+            await message.reply(text='Олег, ну что за ерунду ты прислал? Попробуй-ка еще разок...\n'
+                                     'или, если тебе надоело, жми /cancel ')
 
     # async def remove_search(self, message: aiogram.types.Message):
     #     pass
@@ -79,3 +77,10 @@ class Dispatcher(aiogram.Dispatcher):
     @classmethod
     async def echo(cls, message: aiogram.types.Message):
         await message.reply(text='Это что, Олег? Мы такое не умеем...\n' + cls.HELP)
+
+    @classmethod
+    async def cancel(cls, message: aiogram.types.Message, state: aiogram.dispatcher.FSMContext):
+        current_state = await state.get_state()
+        if current_state:
+            logging.info(f'cancel state=={current_state}')
+            await state.finish()

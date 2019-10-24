@@ -31,7 +31,7 @@ class ChipFind:
         if furl(url).remove(fragment=True, query=True).url != cls.get_search_url():
             raise ValueError(f'url={url} has not supported endpoint')
         query_params = furl(url).query.params
-        return {key: query_params[key] for key in ('s', 'filter') if query_params[key]}
+        return {key: query_params[key] for key in ('s', 'filter') if query_params.get(key)}
 
     @staticmethod
     def parse_item_urls(html):
